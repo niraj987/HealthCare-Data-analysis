@@ -66,9 +66,9 @@ async function loadEDA() {
         });
 
         // 3. Condition by Gender Chart (Grouped Bar)
-        const conditions = Object.keys(data.condition_gender);
-        const femaleData = conditions.map(c => data.condition_gender[c]['Female'] || 0);
-        const maleData = conditions.map(c => data.condition_gender[c]['Male'] || 0);
+        const conditions = Object.keys(data.condition_gender['Female'] || {});
+        const femaleData = conditions.map(c => data.condition_gender['Female'][c] || 0);
+        const maleData = conditions.map(c => data.condition_gender['Male'][c] || 0);
 
         const ctxCondition = document.getElementById('conditionGenderChart').getContext('2d');
         new Chart(ctxCondition, {
