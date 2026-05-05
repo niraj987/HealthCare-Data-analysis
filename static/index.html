@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Analytics & ML Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="background-animation"></div>
+
+    <nav class="glass-nav">
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            <h1>HealthAnalytics AI</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active" onclick="showTab('dashboard')">EDA Dashboard</a></li>
+            <li><a href="#" onclick="showTab('ml-models')">ML Predictions</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <!-- Dashboard Tab -->
+        <section id="dashboard" class="tab-content active">
+            <header class="section-header">
+                <h2>Exploratory Data Analysis</h2>
+                <p>Interactive insights from 55,500 patient records.</p>
+            </header>
+            
+            <div class="chart-grid">
+                <div class="glass-card">
+                    <h3>Billing by Admission Type</h3>
+                    <canvas id="billingChart"></canvas>
+                </div>
+                <div class="glass-card">
+                    <h3>Blood Type Distribution</h3>
+                    <canvas id="bloodTypeChart"></canvas>
+                </div>
+                <div class="glass-card full-width">
+                    <h3>Medical Condition by Gender</h3>
+                    <canvas id="conditionGenderChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ML Models Tab -->
+        <section id="ml-models" class="tab-content" style="display: none;">
+            <header class="section-header">
+                <h2>Predictive AI Models</h2>
+                <p>Leverage Random Forest models trained on healthcare data for real-time predictions.</p>
+            </header>
+
+            <div class="models-grid">
+                <!-- Model 1 -->
+                <div class="glass-card model-card">
+                    <h3>Medical Condition Predictor</h3>
+                    <p class="model-desc">Predicts patient's medical condition.</p>
+                    <form id="form-condition" onsubmit="predictCondition(event)">
+                        <div class="input-group">
+                            <input type="number" id="c-age" placeholder="Age" required>
+                            <select id="c-gender" required>
+                                <option value="" disabled selected>Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select id="c-blood" required>
+                                <option value="" disabled selected>Blood Type</option>
+                                <option value="A+">A+</option><option value="A-">A-</option>
+                                <option value="B+">B+</option><option value="B-">B-</option>
+                                <option value="O+">O+</option><option value="O-">O-</option>
+                                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                            </select>
+                            <select id="c-admission" required>
+                                <option value="" disabled selected>Admission Type</option>
+                                <option value="Emergency">Emergency</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Elective">Elective</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select id="c-test" required>
+                                <option value="" disabled selected>Test Results</option>
+                                <option value="Normal">Normal</option>
+                                <option value="Abnormal">Abnormal</option>
+                                <option value="Inconclusive">Inconclusive</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="glow-button">Predict Condition</button>
+                    </form>
+                    <div id="res-condition" class="prediction-result"></div>
+                </div>
+
+                <!-- Model 2 -->
+                <div class="glass-card model-card">
+                    <h3>Billing Amount Estimator</h3>
+                    <p class="model-desc">Forecasts hospital billing amount.</p>
+                    <form id="form-billing" onsubmit="predictBilling(event)">
+                        <div class="input-group">
+                            <input type="number" id="b-age" placeholder="Age" required>
+                            <select id="b-gender" required>
+                                <option value="" disabled selected>Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select id="b-condition" required>
+                                <option value="" disabled selected>Medical Condition</option>
+                                <option value="Diabetes">Diabetes</option>
+                                <option value="Asthma">Asthma</option>
+                                <option value="Obesity">Obesity</option>
+                                <option value="Arthritis">Arthritis</option>
+                                <option value="Hypertension">Hypertension</option>
+                                <option value="Cancer">Cancer</option>
+                            </select>
+                            <select id="b-admission" required>
+                                <option value="" disabled selected>Admission Type</option>
+                                <option value="Emergency">Emergency</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Elective">Elective</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select id="b-medication" required>
+                                <option value="" disabled selected>Medication</option>
+                                <option value="Aspirin">Aspirin</option>
+                                <option value="Lipitor">Lipitor</option>
+                                <option value="Penicillin">Penicillin</option>
+                                <option value="Paracetamol">Paracetamol</option>
+                                <option value="Ibuprofen">Ibuprofen</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="glow-button">Estimate Bill</button>
+                    </form>
+                    <div id="res-billing" class="prediction-result"></div>
+                </div>
+
+                <!-- Model 3 -->
+                <div class="glass-card model-card">
+                    <h3>Test Results Predictor</h3>
+                    <p class="model-desc">Predicts if tests will be Normal/Abnormal.</p>
+                    <form id="form-test" onsubmit="predictTest(event)">
+                        <div class="input-group">
+                            <input type="number" id="t-age" placeholder="Age" required>
+                            <select id="t-gender" required>
+                                <option value="" disabled selected>Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select id="t-condition" required>
+                                <option value="" disabled selected>Condition</option>
+                                <option value="Diabetes">Diabetes</option>
+                                <option value="Asthma">Asthma</option>
+                                <option value="Obesity">Obesity</option>
+                                <option value="Arthritis">Arthritis</option>
+                                <option value="Hypertension">Hypertension</option>
+                                <option value="Cancer">Cancer</option>
+                            </select>
+                            <select id="t-blood" required>
+                                <option value="" disabled selected>Blood Type</option>
+                                <option value="A+">A+</option><option value="A-">A-</option>
+                                <option value="B+">B+</option><option value="B-">B-</option>
+                                <option value="O+">O+</option><option value="O-">O-</option>
+                                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select id="t-admission" required>
+                                <option value="" disabled selected>Admission Type</option>
+                                <option value="Emergency">Emergency</option>
+                                <option value="Urgent">Urgent</option>
+                                <option value="Elective">Elective</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="glow-button">Predict Test Results</button>
+                    </form>
+                    <div id="res-test" class="prediction-result"></div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
